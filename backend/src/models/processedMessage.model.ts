@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { IProcessedMessage } from "../types/processedMessage.interface";
 
 const pricingSchema = new Schema(
   {
@@ -37,7 +38,7 @@ const conversationSchema = new Schema(
   { _id: false }
 );
 
-const processedMessageSchema = new Schema(
+const processedMessageSchema = new Schema<IProcessedMessage>(
   {
     messageId: {
       type: String,
@@ -114,7 +115,7 @@ const processedMessageSchema = new Schema(
   { timestamps: true, collection: "processed_messages" }
 );
 
-export const ProcessedMessage = mongoose.model(
+export const ProcessedMessage = mongoose.model<IProcessedMessage>(
   "ProcessedMessage",
   processedMessageSchema
 );
