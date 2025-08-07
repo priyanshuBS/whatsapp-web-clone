@@ -1,0 +1,33 @@
+{
+  "name": "whatsapp-api",
+  "version": "1.0.0",
+  "description": "A RESTFUL API backend for managing chat between business and user",
+  "keywords": [
+    "backend",
+    "api",
+    "nodejs",
+    "express",
+    "server",
+    "chat"
+  ],
+  "homepage": "https://github.com/priyanshuBS/whatsapp-web-clone#readme",
+  "bugs": {
+    "url": "https://github.com/priyanshuBS/whatsapp-web-clone/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/priyanshuBS/whatsapp-web-clone.git"
+  },
+  "license": "ISC",
+  "author": "Priyanshu Singh",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.0"
+  }
+}
