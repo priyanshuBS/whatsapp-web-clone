@@ -14,7 +14,7 @@ const conversationSchema = z.object({
   origin: z
     .enum(["user_initiated", "business_initiated", "referral_conversion"])
     .optional(),
-  expiration: z.coerce.date().optional(), // converts from string/timestamp
+  expiration: z.coerce.date().optional(),
 });
 
 export const processedMessageSchema = z.object({
