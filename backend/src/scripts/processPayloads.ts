@@ -6,7 +6,7 @@ import connectDB from "../config/database";
 import { ProcessedMessage } from "../models/processedMessage.model";
 import { processedMessageSchema } from "../validations/processedMessage.schema";
 
-const PAYLOADS_DIR = path.join(process.cwd(), "payloads");
+const PAYLOADS_DIR = path.join(__dirname, "../payloads");
 
 const processPayloadFile = async (filePath: string) => {
   try {
@@ -25,17 +25,22 @@ const processPayloadFile = async (filePath: string) => {
       const message = value.messages[0];
       const contact = value.contacts?.[0];
       const from = message.from;
-      const to = value.metadata.display_phone_number;
+      const waId = contact?.wa_id || from;
+      const businessNumber = value.metadata?.display_phone_number;
+
+      const isIncoming = from === waId;
+      const to = isIncoming ? businessNumber : waId;
+      const direction = isIncoming ? "incoming" : "outgoing";
 
       const data = {
         messageId: message.id,
-        waId: contact?.wa_id || from,
+        waId,
         contactName: contact?.profile?.name || "Unknown",
         from,
         to,
         body: message.text?.body || "",
         timestamp: new Date(parseInt(message.timestamp) * 1000),
-        direction: from === contact?.wa_id ? "incoming" : "outgoing",
+        direction,
         rawPayload: payload,
       };
 
@@ -47,7 +52,12 @@ const processPayloadFile = async (filePath: string) => {
         return;
       }
 
-      await ProcessedMessage.create(parsed.data);
+      await ProcessedMessage.updateOne(
+        { messageId: parsed.data.messageId },
+        { $setOnInsert: parsed.data },
+        { upsert: true }
+      );
+
       console.log(`Message saved: ${data.messageId}`);
     }
 
