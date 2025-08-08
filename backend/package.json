@@ -26,6 +26,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "process": "tsx scripts/processPayloads.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
